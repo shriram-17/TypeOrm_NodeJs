@@ -12,7 +12,7 @@ const userRouter = (app:FastifyInstance,opts:any,done:() => void) => {
     app.get('/all',async (request,reply) => {
         const users: User[] = await AppDataSource.getRepository(User).find(); 
         console.log(users);
-        reply.code(500).send(users);
+        reply.code(200).send(users);
     });
 
     app.get('/name',async(request,reply)=> {
@@ -46,15 +46,13 @@ const userRouter = (app:FastifyInstance,opts:any,done:() => void) => {
       
       app.post('/',async (request:FastifyRequest,reply)=>{ 
         const user  = request.body;
-        console.log(user)
-        console.log(UserSchema.parse(user))
         const Valid :boolean =UserSchema.safeParse(user).success; 
         if(Valid)
         {
           try
           {
           await AppDataSource.getRepository(User).save(user);
-          reply.code(500).send({"Message":"User Have Been Inserted"});        
+          reply.code(200).send({"Message":"User Have Been Inserted"});        
           }
           catch(err)
           {
@@ -71,7 +69,7 @@ const userRouter = (app:FastifyInstance,opts:any,done:() => void) => {
        
       try {
         await AppDataSource.getRepository(User).update({id:id},{firstName:name})
-        reply.code(500).send({"Message":"I have sent"})
+        reply.code(200).send({"Message":"I have sent"})
       }
       catch(err)
       {
@@ -87,7 +85,7 @@ const userRouter = (app:FastifyInstance,opts:any,done:() => void) => {
 
       const sumOfAges:number = users.reduce((total,user) => total+user.age,0);
         
-      return reply.code(500).send(sumOfAges);
+      return reply.code(200).send(sumOfAges);
     });
 
     done();
